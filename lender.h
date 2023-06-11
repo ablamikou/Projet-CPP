@@ -4,13 +4,13 @@
 #include <string>
 
 class Lender {
-public:
-    Lender(const std::string& name);
+    private:
+        std::string name;
 
-    std::string getName() const;
+    public:
+        Lender(const std::string& name);
 
-private:
-    std::string name_;
+        std::string getName() const;
 };
 
 #endif
