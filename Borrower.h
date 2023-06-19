@@ -1,8 +1,9 @@
 #ifndef BORROWER_H
 #define BORROWER_H
+
 #include "Company.h"
-#include "Deal.h"
 #include <vector>
+class Deal;
 
 class Borrower : public Company {
 private:

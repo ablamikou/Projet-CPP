@@ -1,17 +1,12 @@
-//
-// Created by Anwar on 12/06/2023.
-//
-
 #ifndef PROJET_CPP_FACILITY_H
 #define PROJET_CPP_FACILITY_H
 
-#include "Deal.h"
 #include <chrono>
 #include <vector>
 
+// Forward declaration
 class Lender;
 class Deal;
-
 class Facility {
 private:
     std::vector<Lender*> lenders;

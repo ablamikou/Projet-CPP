@@ -1,11 +1,8 @@
-//
-// Created by Anwar on 12/06/2023.
-//
-
 #ifndef PROJET_CPP_COMPANY_H
 #define PROJET_CPP_COMPANY_H
 
 #include <string>
+
 
 class Company {
 protected:

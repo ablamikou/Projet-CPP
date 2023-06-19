@@ -1,14 +1,14 @@
 #ifndef DEAL_H
 #define DEAL_H
-#include "Borrower.h"
-#include "Lender.h"
-#include "Facility.h"
+
 #include <chrono>
 #include <string>
 #include <vector>
 
+// Forward declaration
 class Borrower;
 class Lender;
+class Facility;
 
 class Deal {
 private:

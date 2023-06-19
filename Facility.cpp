@@ -1,4 +1,6 @@
 #include "Facility.h"
+#include "Deal.h"
+#include "Lender.h"
 
 Facility::Facility(Deal* deal, const std::chrono::system_clock::time_point& startDate,
                    const std::chrono::system_clock::time_point& endDate, double amount,

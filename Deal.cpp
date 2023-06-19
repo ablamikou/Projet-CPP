@@ -1,4 +1,8 @@
 #include "Deal.h"
+#include "Borrower.h"
+#include "Lender.h"
+#include "Facility.h"
+
 
 Deal::Deal(Borrower* borrower, Lender* agent, const std::string& contractNumber, double projectAmount,
            const std::string& currency, const std::chrono::system_clock::time_point& contractStartDate,
