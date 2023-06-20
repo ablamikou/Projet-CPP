@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <vector>
+#include <string>
 
 // Forward declaration
 class Lender;
@@ -17,8 +18,8 @@ private:
     std::string currency;
 
 public:
-    Facility(Deal* deal, const std::chrono::system_clock::time_point& startDate,
-             const std::chrono::system_clock::time_point& endDate, double amount,
+    Facility(Deal* deal, const std::string& startDateString,
+             const std::string& endDateString, double amount,
              const std::string& currency);
     void addLender(Lender* lender);
 

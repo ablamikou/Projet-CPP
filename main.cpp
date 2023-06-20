@@ -16,28 +16,28 @@ int main() {
     Lender *lender3 = new Lender("Bank D", true, "864209753");
 
     // Création des facilities
-    Facility *facility1 = new Facility(nullptr, std::chrono::system_clock::now(),
-                                       std::chrono::system_clock::now() + std::chrono::hours(24 * 365), 1000000, "USD");
+    Facility *facility1 = new Facility(nullptr, "22-06-2023",
+                                       "22-06-2024", 1000000, "USD");
     facility1->addLender(agent);
     facility1->addLender(lender1);
 
-    Facility *facility2 = new Facility(nullptr, std::chrono::system_clock::now(),
-                                       std::chrono::system_clock::now() + std::chrono::hours(24 * 365 * 2), 2000000,
+    Facility *facility2 = new Facility(nullptr, "22-06-2023",
+                                       "22-06-2025", 2000000,
                                        "USD");
     facility2->addLender(lender2);
     facility2->addLender(lender3);
 
     // Création d'un contrat
     Deal *deal = new Deal(borrower, agent, "S1234", 3000000, "USD",
-                          std::chrono::system_clock::now(),
-                          std::chrono::system_clock::now() + std::chrono::hours(24 * 365 * 5));
+                          "22-06-2023",
+                          "22-06-2028");
     deal->addFacility(facility1);
     deal->addFacility(facility2);
     deal->addPoolMember(lender1);
     deal->addPoolMember(lender2);
     deal->addPoolMember(lender3);
 
-    // Assigner le contrat aux faicilities
+    // Assigner le contrat aux facilities
     facility1->setDeal(deal);
     facility2->setDeal(deal);
 

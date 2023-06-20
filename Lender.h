@@ -4,10 +4,8 @@
 #include "Company.h"
 #include <vector>
 
-// Forward declaration
 class Facility;
 class Deal;
-
 
 class Lender : public Company {
 private:

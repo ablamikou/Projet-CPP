@@ -25,8 +25,8 @@ private:
 
 public:
     Deal(Borrower* borrower, Lender* agent, const std::string& contractNumber, double projectAmount,
-         const std::string& currency, const std::chrono::system_clock::time_point& contractStartDate,
-         const std::chrono::system_clock::time_point& contractEndDate);
+    const std::string& currency, const std::string& contractStartDateStr,
+    const std::string& contractEndDateStr);
     void addPoolMember(Lender* lender);
     void addFacility(Facility* facility);
 

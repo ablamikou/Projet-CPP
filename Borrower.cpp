@@ -15,3 +15,4 @@ const std::vector<Deal*>& Borrower::getDeals() const {
 void Borrower::setDeals(const std::vector<Deal*>& deals) {
     this->deals = deals;
 }
+

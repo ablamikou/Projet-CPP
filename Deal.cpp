@@ -2,13 +2,48 @@
 #include "Borrower.h"
 #include "Lender.h"
 #include "Facility.h"
-
+#include <regex>
+#include <sstream>
+#include <iomanip>
 
 Deal::Deal(Borrower* borrower, Lender* agent, const std::string& contractNumber, double projectAmount,
-           const std::string& currency, const std::chrono::system_clock::time_point& contractStartDate,
-           const std::chrono::system_clock::time_point& contractEndDate) :
-        borrower(borrower), agent(agent), contractNumber(contractNumber), projectAmount(projectAmount),
-        currency(currency), contractStartDate(contractStartDate), contractEndDate(contractEndDate) { }
+           const std::string& currency, const std::string& contractStartDateStr,
+           const std::string& contractEndDateStr) {
+
+    //Control of the contract number
+std::regex contractNumberPattern("[SZB]\\d{4}");
+if(!std::regex_match(contractNumber, contractNumberPattern)){
+throw std::invalid_argument("The contract number is not in the correct format. It should be one these letters (S,Z,B) followed by 4 numbers");
+}
+//Control of the dates
+    std::tm contractStartDate = {};
+    std::istringstream contractStartDateStream(contractStartDateStr);
+    contractStartDateStream >> std::get_time(&contractStartDate, "%d-%m-%Y");
+
+    if (contractStartDateStream.fail()) {
+        throw std::runtime_error("Date is not in the correct format (dd-MM-yyyy)");
+    }
+
+    std::tm contractEndDate = {};
+    std::istringstream contractEndDateStream(contractEndDateStr);
+    contractEndDateStream >> std::get_time(&contractEndDate, "%d-%m-%Y");
+
+    if (contractEndDateStream.fail()) {
+        throw std::runtime_error("Date is not in the correct format (dd-MM-yyyy)");
+    }
+
+    if (std::difftime(std::mktime(&contractStartDate), std::mktime(&contractEndDate)) > 0) {
+        throw std::runtime_error("Start date must be before end date");
+    }
+
+this->borrower = borrower;
+this->agent = agent;
+this->contractNumber = contractNumber;
+this->projectAmount = projectAmount;
+this->currency = currency;
+this->contractStartDate = std::chrono::system_clock::from_time_t(std::mktime(&contractStartDate));
+this->contractEndDate = std::chrono::system_clock::from_time_t(std::mktime(&contractEndDate));
+}
 
 void Deal::addPoolMember(Lender* lender) {
     pool.push_back(lender);
