@@ -1,3 +1,0 @@
-C:/Users/Anwar/Desktop/M2-IF/Cpp/anwar-mikou-cpp/cmake-build-debug/CMakeFiles/anwar_mikou_cpp.dir
-C:/Users/Anwar/Desktop/M2-IF/Cpp/anwar-mikou-cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Anwar/Desktop/M2-IF/Cpp/anwar-mikou-cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
