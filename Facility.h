@@ -4,8 +4,8 @@
 #include <chrono>
 #include <vector>
 #include <string>
+#include <map>
 
-// Forward declaration
 class Lender;
 class Deal;
 class Facility {
@@ -14,8 +14,13 @@ private:
     Deal* deal;
     std::chrono::system_clock::time_point startDate;
     std::chrono::system_clock::time_point endDate;
-    double amount;
-    std::string currency;
+    double amountTotal;
+    std::string currency; //doit etre multi devise.
+    double facilityInterest;
+
+    //Pour savoir quel lender à donner combien
+    std::map<Lender*, double> repartAmount;
+
 
 public:
     Facility(Deal* deal, const std::string& startDateString,
@@ -40,7 +45,9 @@ public:
 
     const std::string& getCurrency() const;
     void setCurrency(const std::string& currency);
+
+    void addLenderContribution(Lender* lender, double contribution);
 };
 
 
-#endif //PROJET_CPP_FACILITY_H
+#endif

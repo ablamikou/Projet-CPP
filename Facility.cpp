@@ -6,11 +6,12 @@
 #include <stdexcept>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 Facility::Facility(Deal* deal, const std::string& startDateString,
-                   const std::string& endDateString, double amount,
+                   const std::string& endDateString, double amountTotal,
                    const std::string& currency) :
-        deal(deal), amount(amount), currency(currency) {
+        deal(deal), amountTotal(amountTotal), currency(currency) {
 
     // Convert string to time_point
     std::istringstream startDateStream(startDateString);
@@ -32,6 +33,7 @@ Facility::Facility(Deal* deal, const std::string& startDateString,
 
     this->startDate = startDate;
     this->endDate = endDate;
+    this->facilityInterest = 0.1 * amountTotal; //changer de formule pour prendre en consideration le temps
 }
 
 void Facility::addLender(Lender* lender) {
@@ -71,11 +73,11 @@ void Facility::setEndDate(const std::chrono::system_clock::time_point& endDate) 
 }
 
 double Facility::getAmount() const {
-    return amount;
+    return amountTotal;
 }
 
 void Facility::setAmount(double amount) {
-    this->amount = amount;
+    this->amountTotal = amount;
 }
 
 const std::string& Facility::getCurrency() const {
@@ -85,3 +87,20 @@ const std::string& Facility::getCurrency() const {
 void Facility::setCurrency(const std::string& currency) {
     this->currency = currency;
 }
+
+void Facility::addLenderContribution(Lender* lender, double contribution) {
+        double currentSum = 0.0;
+        for (const auto& pair : repartAmount) {
+            currentSum += pair.second;
+        }
+
+        if (currentSum + contribution > 100.0) {
+            // La somme dépasse 100, signaler une erreur
+            std::cout << "Erreur : La somme des contributions dépasse 100%" << std::endl;
+        } else {
+            repartAmount[lender] = contribution;
+            std::cout << "Couple ajouté à repation des lenders : Lender = " << lender->getName()
+                      << ", Contribution = " << contribution << std::endl;
+            std::cout << "Info : La nouvelle contribution est de " << currentSum + contribution <<  " %." << std::endl;
+        }
+    }
