@@ -1,27 +1,26 @@
 #ifndef PROJET_CPP_PART_H
 #define PROJET_CPP_PART_H
 
-class Lender;
-class Deal;
+#include <chrono>
+#include <string>
+
+class Facility;
 
 class Part {
 public:
-    Part(Deal* deal, Lender* lender, float pourcentage);
+    Part(Facility* facility, const std::string& startDateString);
     ~Part();
 
-    double getInterestTotal() const;
-    bool refundInterest(double amount);
-
+    double getAmountPayed() const;
+    void setAmoundPayed(double amount);
+    void refund();
 
 private:
-    Deal* deal;
-    Lender* lender;
-    float pourcentage;
-    double interestTotal;
-    double interestPayed;
-    double interestNotPayedYet;
+    Facility* facility; //Comporte un deal qui comporte un borrower
+    double amountPayed;
+    std::chrono::system_clock::time_point dateExecution;
 
-    void calculateInterest();
+    void calculateAmount();
 };
 
 #endif

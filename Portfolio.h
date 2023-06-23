@@ -5,28 +5,23 @@
 #include <string>
 #include <map>
 
-
 class Deal;
 class Part;
 
 class Portfolio {
 private:
-    Deal* dealAssociated;
-    std::vector<Part*> parts;
-    std::map<std::string, double> interestPayments; //The string is the date of the payement
-
+    Deal* dealAssociated; //Qui comporte les facilities
+    std::vector<double> interestPayments;
 
 public:
     Portfolio(Deal* deal);
     ~Portfolio();
 
-    void addPart(Part* part);
-    void removePart(Part* part);
-
     Deal* getDealAssociated() const;
-    const std::vector<Part*>& getParts() const;
-    void addInterestPayment(const std::string& date, double amount);
-
+    void addInterestPayment(double amount);
+    double getTotalAmount() const;
+    const std::vector<double>& getInterestPayments() const;
+    void setInterestPayment(int index, double amount);
 };
 
 #endif

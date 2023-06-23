@@ -1,18 +1,19 @@
 #include "Facility.h"
 #include "Deal.h"
 #include "Lender.h"
+#include "Portfolio.h"
 #include <chrono>
 #include <ctime>
 #include <stdexcept>
 #include <sstream>
 #include <iomanip>
 #include <iostream>
+#include<math.h>
 
 Facility::Facility(Deal* deal, const std::string& startDateString,
-                   const std::string& endDateString, double amountTotal,
+                   const std::string& endDateString, double amount,
                    const std::string& currency) :
-        deal(deal), amountTotal(amountTotal), currency(currency) {
-
+        deal(deal), amountTotal(amount), currency(currency), facilityInterest(0.05), interestToAddPortfolio() {
     // Convert string to time_point
     std::istringstream startDateStream(startDateString);
     std::istringstream endDateStream(endDateString);
@@ -33,11 +34,13 @@ Facility::Facility(Deal* deal, const std::string& startDateString,
 
     this->startDate = startDate;
     this->endDate = endDate;
-    this->facilityInterest = 0.1 * amountTotal; //changer de formule pour prendre en consideration le temps
 }
 
 void Facility::addLender(Lender* lender) {
     lenders.push_back(lender);
+}
+void Facility::addInterestToAddPortfolio(double amount) {
+    interestToAddPortfolio.push_back(amount);
 }
 
 const std::vector<Lender*>& Facility::getLenders() const {
@@ -56,6 +59,15 @@ void Facility::setDeal(Deal* deal) {
     this->deal = deal;
 }
 
+const std::vector<double> Facility::getInterestToAddPortfolio() const{
+    return interestToAddPortfolio;
+}
+double Facility::getFacilityInterest() const{
+    return facilityInterest;
+}
+void Facility::setFacilityInterest(double facilityInterest) {
+    this->facilityInterest=facilityInterest;
+}
 const std::chrono::system_clock::time_point& Facility::getStartDate() const {
     return startDate;
 }
@@ -89,8 +101,9 @@ void Facility::setCurrency(const std::string& currency) {
 }
 
 void Facility::addLenderContribution(Lender* lender, double contribution) {
+    if (contribution <= 100.0 and contribution >= 0.0) {
         double currentSum = 0.0;
-        for (const auto& pair : repartAmount) {
+        for (const auto &pair: repartAmount) {
             currentSum += pair.second;
         }
 
@@ -101,6 +114,28 @@ void Facility::addLenderContribution(Lender* lender, double contribution) {
             repartAmount[lender] = contribution;
             std::cout << "Couple ajouté à repation des lenders : Lender = " << lender->getName()
                       << ", Contribution = " << contribution << std::endl;
-            std::cout << "Info : La nouvelle contribution est de " << currentSum + contribution <<  " %." << std::endl;
+            std::cout << "Info : La nouvelle contribution est de " << currentSum + contribution << " %." << std::endl;
         }
+    } else {
+        throw std::invalid_argument("La contribution doit être un pourcentage valide (entre 0 et 100)");
+    }
+}
+    void Facility::insertInPortfolio() {
+        // Vérifie si le deal associé existe
+        if (!deal) {
+            throw std::runtime_error("Aucun deal associé à la facility");
+        }
+
+        // Récupère le portfolio associé au deal
+        Portfolio* portfolio = deal->getPortfolio();
+        if (!portfolio) {
+            throw std::runtime_error("Aucun portfolio associé au deal");
+        }
+
+        // Ajoute les intérêts stockés dans interestToAddPortfolio au portfolio
+        for (double interest : interestToAddPortfolio) {
+            portfolio->addInterestPayment(interest);
+        }
+        // Efface les intérêts stockés dans interestToAddPortfolio
+        interestToAddPortfolio.clear();
     }

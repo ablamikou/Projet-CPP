@@ -4,11 +4,13 @@
 #include <chrono>
 #include <string>
 #include <vector>
+#include "Portfolio.h"
 
 // Forward declaration
 class Borrower;
 class Lender;
 class Facility;
+class Portfolio;
 
 class Deal {
 private:
@@ -21,7 +23,8 @@ private:
     std::string currency;
     std::chrono::system_clock::time_point contractStartDate;
     std::chrono::system_clock::time_point contractEndDate;
-    std::string status; //ou enum ??
+    std::string status; //mettre a jour
+    Portfolio* portfolio;
 
 public:
     Deal(Borrower* borrower, Lender* agent, const std::string& contractNumber, double projectAmount,
@@ -35,6 +38,9 @@ public:
 
     Lender* getAgent() const;
     void setAgent(Lender* agent);
+
+    Portfolio* getPortfolio() const;
+    void setPortfolio(Portfolio *portfolio);
 
     const std::vector<Lender*>& getPool() const;
     void setPool(const std::vector<Lender*>& pool);
@@ -58,6 +64,9 @@ public:
 
     const std::string& getStatus() const;
     void setStatus(const std::string& status);
+    void updateStatus();
+    void refundInterests(double amount); //rembourse une partie des intérêts
+    void refundInterests(); //rembourse tous les intérêts
 };
 
 #endif

@@ -57,6 +57,10 @@ Borrower* Deal::getBorrower() const {
     return borrower;
 }
 
+Portfolio* Deal::getPortfolio() const {
+    return portfolio;
+}
+
 void Deal::setBorrower(Borrower* borrower) {
     this->borrower = borrower;
 }
@@ -108,6 +112,9 @@ const std::string& Deal::getCurrency() const {
 void Deal::setCurrency(const std::string& currency) {
     this->currency = currency;
 }
+void Deal::setPortfolio(Portfolio *portfolio) {
+    this->portfolio=portfolio;
+}
 
 const std::chrono::system_clock::time_point& Deal::getContractStartDate() const {
     return contractStartDate;
@@ -132,3 +139,51 @@ const std::string& Deal::getStatus() const {
 void Deal::setStatus(const std::string& status) {
     this->status = status;
 }
+
+void Deal::updateStatus() {
+    double totalFacilitiesAmount = 0.0;
+    for (Facility* facility : facilities) {
+        totalFacilitiesAmount += facility->getAmount();
+    }
+
+    double totalPortfolioAmount = 0.0;
+    if (portfolio) {
+        totalPortfolioAmount = portfolio->getTotalAmount();
+    }
+
+    if (totalFacilitiesAmount == 0.0 && totalPortfolioAmount == 0.0) {
+        status = "terminated";
+    } else {
+        status = "close";
+    }
+}
+void Deal::refundInterests(double amount) {
+    Portfolio* portfolio = getPortfolio();
+    const std::vector<double>& interestPayments = portfolio->getInterestPayments();
+    if(amount>portfolio->getTotalAmount()){
+        throw std::invalid_argument("Le montant est supérieur au montant total des intérêts");
+    }else {
+    for (int i = 0; i < interestPayments.size(); i++) {
+        if (amount >= interestPayments[i]) {
+            portfolio->setInterestPayment(i, 0.0);
+            amount -= interestPayments[i];
+        } else {
+            portfolio->setInterestPayment(i, interestPayments[i] - amount);
+            amount = 0.0;
+            break;
+        }
+    }
+    }
+    updateStatus();
+    }
+void Deal::refundInterests() {
+    Portfolio* portfolio = getPortfolio();
+    const std::vector<double>& interestPayments = portfolio->getInterestPayments();
+    for (int i = 0; i < interestPayments.size(); i++) {
+        portfolio->setInterestPayment(i, 0.0);
+    }
+    updateStatus();
+}
+
+
+

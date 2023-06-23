@@ -15,9 +15,9 @@ private:
     std::chrono::system_clock::time_point startDate;
     std::chrono::system_clock::time_point endDate;
     double amountTotal;
-    std::string currency; //doit etre multi devise.
+    std::string currency; //peut être différente de la devise du deal
     double facilityInterest;
-
+    std::vector<double> interestToAddPortfolio;
     //Pour savoir quel lender à donner combien
     std::map<Lender*, double> repartAmount;
 
@@ -26,6 +26,7 @@ public:
     Facility(Deal* deal, const std::string& startDateString,
              const std::string& endDateString, double amount,
              const std::string& currency);
+
     void addLender(Lender* lender);
 
     const std::vector<Lender*>& getLenders() const;
@@ -33,6 +34,9 @@ public:
 
     Deal* getDeal() const;
     void setDeal(Deal* deal);
+
+    double getFacilityInterest() const;
+    void setFacilityInterest(double facilityInterest);
 
     const std::chrono::system_clock::time_point& getStartDate() const;
     void setStartDate(const std::chrono::system_clock::time_point& startDate);
@@ -47,6 +51,10 @@ public:
     void setCurrency(const std::string& currency);
 
     void addLenderContribution(Lender* lender, double contribution);
+
+    void addInterestToAddPortfolio(double amount);
+    void insertInPortfolio();
+    const std::vector<double> getInterestToAddPortfolio() const;
 };
 
 
