@@ -6,7 +6,6 @@
 #include <vector>
 #include "Portfolio.h"
 
-// Forward declaration
 class Borrower;
 class Lender;
 class Facility;
@@ -30,6 +29,9 @@ public:
     Deal(Borrower* borrower, Lender* agent, const std::string& contractNumber, double projectAmount,
     const std::string& currency, const std::string& contractStartDateStr,
     const std::string& contractEndDateStr);
+
+    ~Deal();
+
     void addPoolMember(Lender* lender);
     void addFacility(Facility* facility);
 

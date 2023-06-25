@@ -28,6 +28,8 @@ public:
     Facility(Deal* deal, const std::string& startDateString,
              const std::string& endDateString, double amount,
              const std::string& currency);
+    
+    ~Facility();
 
     void addLender(Lender* lender);
 

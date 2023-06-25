@@ -27,32 +27,30 @@ double Part::getAmountPayed() const {
 void Part::setAmoundPayed(double amount) {
     this->amountPayed=amount;
 }
+
 void Part::refund() {
-// Vérifie si l'objet Facility est valide
+
     if (facility) {
-        // Récupére l'objet Facility associé
-        Facility* facilityObject = facility;
-        double currentAmount = facilityObject->getAmount();
+        
+        double currentAmount = facility->getAmount();
         if((currentAmount-amountPayed)>=0) {
-            if (dateExecution < facilityObject->getStartDate()) {
+            if (dateExecution < facility->getStartDate()) {
                 throw std::runtime_error("La date de la part est avant la date de début de la facility");
             }
-            if (dateExecution > facilityObject->getEndDate()) {
+            if (dateExecution > facility->getEndDate()) {
                 throw std::runtime_error("La date de la part est après la date de fin de la facility");
             }
-            // Je calcule le temps en jour entre la date de la facilty et la date de la part
-            std::chrono::duration<double> duration = dateExecution - facilityObject->getStartDate() ;
+            //Calcule du temps en jour entre la date de la facilty et la date de la part
+            std::chrono::duration<double> duration = dateExecution - facility->getStartDate() ;
             double period = duration.count() / (24.0 * 60.0 * 60.0);
-            //Ensuite je calcule l'interet à payer avec la formule suivante : (taux facility*montant facilty total)*(nb d'année)
-            double interestToPay = (facilityObject->getFacilityInterest() * facilityObject->getAmount())*(period/365);
-            //Je stocke ce montant calculé dans la liste repartAmount de la facility
-            facilityObject->getDeal()->getPortfolio()->addInterestPayment(interestToPay);
-            //facilityObject->addInterestToAddPortfolio(interestToPay);
+            //Interet à payer avec la formule suivante : (taux facility*montant facilty total)*(nb d'année)
+            double interestToPay = (facility->getFacilityInterest() * facility->getAmount())*(period/365);
+            facility->getDeal()->getPortfolio()->addInterestPayment(interestToPay);
+
             // Met à jour le montant de l'objet Facility en le diminuant de amountPayed
             double refundAmount = currentAmount - amountPayed;
-            facilityObject->setAmount(refundAmount);
+            facility->setAmount(refundAmount);
 
-            //Mise à jour des statuts
             Deal* deal = facility->getDeal();
             if (deal != nullptr) {
                 deal->updateStatus();
@@ -64,5 +62,5 @@ void Part::refund() {
     }
 }
 }
-Part::~Part(){
-}
+
+Part::~Part(){}

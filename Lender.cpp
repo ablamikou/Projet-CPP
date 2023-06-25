@@ -10,10 +10,11 @@ Lender::Lender(const std::string& name, bool isFinancialInstitution, const std::
     }
          }
 
+Lender::~Lender(){}
 void Lender::addDeal(Deal* deal) {
     deals.push_back(deal);
 }
-/*
+
 void Lender::addFacility(Facility* facility) {
     facilities.push_back(facility);
 }
@@ -25,7 +26,7 @@ const std::vector<Facility*>& Lender::getFacilities() const {
 void Lender::setFacilities(const std::vector<Facility*>& facilities) {
     this->facilities = facilities;
 }
- */
+
 const std::vector<Deal*>& Lender::getDeals() const {
     return deals;
 }

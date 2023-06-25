@@ -45,6 +45,8 @@ this->contractStartDate = std::chrono::system_clock::from_time_t(std::mktime(&co
 this->contractEndDate = std::chrono::system_clock::from_time_t(std::mktime(&contractEndDate));
 }
 
+Deal::~Deal(){};
+
 void Deal::addPoolMember(Lender* lender) {
     pool.push_back(lender);
 }
@@ -186,6 +188,3 @@ void Deal::refundInterests() {
     }
     updateStatus();
 }
-
-
-

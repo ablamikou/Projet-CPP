@@ -14,6 +14,7 @@ private:
 
 public:
     Lender(const std::string& name, bool isFinancialInstitution, const std::string& siren);
+    ~Lender();
     void addDeal(Deal* deal);
     void addFacility(Facility* facility);
 

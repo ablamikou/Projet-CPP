@@ -11,6 +11,7 @@ private:
 
 public:
     Borrower(const std::string& name, bool isFinancialInstitution, const std::string& siren);
+    ~Borrower();
     //Ajoute un deal a la liste
     void addDeal(Deal* deal);
 

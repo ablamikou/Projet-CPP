@@ -3,6 +3,8 @@
 Company::Company(const std::string& name, bool isFinancialInstitution, const std::string& siren) :
         name(name), isFinancialInstitution(isFinancialInstitution), siren(siren) { }
 
+Company::~Company(){};
+
 const std::string& Company::getName() const {
     return name;
 }

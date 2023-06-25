@@ -36,6 +36,8 @@ Facility::Facility(Deal* deal, const std::string& startDateString,
     this->endDate = endDate;
 }
 
+Facility::~Facility(){};
+
 void Facility::addLender(Lender* lender) {
     lenders.push_back(lender);
 }

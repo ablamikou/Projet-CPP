@@ -12,6 +12,7 @@ protected:
 
 public:
     Company(const std::string& name, bool isFinancialInstitution, const std::string& siren);
+    ~Company();
 
     const std::string& getName() const;
     void setName(const std::string& name);
@@ -23,4 +24,4 @@ public:
     void setSiren(const std::string& siren);
 };
 
-#endif //PROJET_CPP_COMPANY_H
+#endif
