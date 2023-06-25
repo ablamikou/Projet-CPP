@@ -20,6 +20,8 @@ private:
     std::vector<double> interestToAddPortfolio;
     //Pour savoir quel lender à donner combien
     std::map<Lender*, double> repartAmount;
+public:
+    const std::map<Lender *, double> &getRepartAmount() const;
 
 
 public:
@@ -52,8 +54,6 @@ public:
 
     void addLenderContribution(Lender* lender, double contribution);
 
-    void addInterestToAddPortfolio(double amount);
-    void insertInPortfolio();
     const std::vector<double> getInterestToAddPortfolio() const;
 };
 

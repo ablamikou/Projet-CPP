@@ -14,13 +14,13 @@ public:
     double getAmountPayed() const;
     void setAmoundPayed(double amount);
     void refund();
+    void calculateAmount();
 
 private:
     Facility* facility; //Comporte un deal qui comporte un borrower
     double amountPayed;
     std::chrono::system_clock::time_point dateExecution;
 
-    void calculateAmount();
 };
 
 #endif

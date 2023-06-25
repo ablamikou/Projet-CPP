@@ -46,9 +46,8 @@ void Part::refund() {
             //Ensuite je calcule l'interet à payer avec la formule suivante : (taux facility*montant facilty total)*(nb d'année)
             double interestToPay = (facilityObject->getFacilityInterest() * facilityObject->getAmount())*(period/365);
             //Je stocke ce montant calculé dans la liste repartAmount de la facility
-            facilityObject->addInterestToAddPortfolio(interestToPay);
-            //Je met à jour la date de la facility avec la date de la part
-            facilityObject->setStartDate(dateExecution);
+            facilityObject->getDeal()->getPortfolio()->addInterestPayment(interestToPay);
+            //facilityObject->addInterestToAddPortfolio(interestToPay);
             // Met à jour le montant de l'objet Facility en le diminuant de amountPayed
             double refundAmount = currentAmount - amountPayed;
             facilityObject->setAmount(refundAmount);

@@ -39,9 +39,6 @@ Facility::Facility(Deal* deal, const std::string& startDateString,
 void Facility::addLender(Lender* lender) {
     lenders.push_back(lender);
 }
-void Facility::addInterestToAddPortfolio(double amount) {
-    interestToAddPortfolio.push_back(amount);
-}
 
 const std::vector<Lender*>& Facility::getLenders() const {
     return lenders;
@@ -106,36 +103,16 @@ void Facility::addLenderContribution(Lender* lender, double contribution) {
         for (const auto &pair: repartAmount) {
             currentSum += pair.second;
         }
-
         if (currentSum + contribution > 100.0) {
-            // La somme dépasse 100, signaler une erreur
-            std::cout << "Erreur : La somme des contributions dépasse 100%" << std::endl;
+            throw std::invalid_argument("Erreur : Le pourcentage des contributions dépasse 100%");
         } else {
-            repartAmount[lender] = contribution;
-            std::cout << "Couple ajouté à repation des lenders : Lender = " << lender->getName()
-                      << ", Contribution = " << contribution << std::endl;
-            std::cout << "Info : La nouvelle contribution est de " << currentSum + contribution << " %." << std::endl;
+            repartAmount[lender] +=contribution;
         }
     } else {
         throw std::invalid_argument("La contribution doit être un pourcentage valide (entre 0 et 100)");
     }
 }
-    void Facility::insertInPortfolio() {
-        // Vérifie si le deal associé existe
-        if (!deal) {
-            throw std::runtime_error("Aucun deal associé à la facility");
-        }
 
-        // Récupère le portfolio associé au deal
-        Portfolio* portfolio = deal->getPortfolio();
-        if (!portfolio) {
-            throw std::runtime_error("Aucun portfolio associé au deal");
-        }
-
-        // Ajoute les intérêts stockés dans interestToAddPortfolio au portfolio
-        for (double interest : interestToAddPortfolio) {
-            portfolio->addInterestPayment(interest);
-        }
-        // Efface les intérêts stockés dans interestToAddPortfolio
-        interestToAddPortfolio.clear();
-    }
+const std::map<Lender *, double> &Facility::getRepartAmount() const {
+    return repartAmount;
+}

@@ -28,6 +28,22 @@ int main() {
     facility2->addLender(lender2);
     facility2->addLender(lender3);
 
+/* //Affichage des contributions par lender
+    facility1->addLenderContribution(lender1,20);
+    facility1->addLenderContribution(lender1,30);
+    facility1->addLenderContribution(lender2,30);
+    facility1->addLenderContribution(lender3,20);
+    std::map<Lender *, double> contrib = facility1->getRepartAmount();
+    // Afficher le contenu du vecteur
+    std::cout << "Contenu des contrib : ";
+    for (const auto& pair : contrib) {
+        Lender* lender = pair.first;
+        double amount = pair.second;
+
+        std::cout << "Lender: " << lender << ", Contribution: " << amount << std::endl;
+    }
+    std::cout << std::endl;
+*/
     // Création d'un contrat
     Deal *deal = new Deal(borrower, agent, "S1234", 3000000, "USD",
                           "22-06-2023",
@@ -65,6 +81,11 @@ int main() {
         std::cout << "\t" << "Currency: " << facility->getCurrency() << std::endl;
     }
 
+    Portfolio *portfolio1=new Portfolio(deal);
+    deal->setPortfolio(portfolio1);
+
+
+    std::cout << "--------------------------------------------------------------" << std::endl;
     std::cout << std::endl << "Montant initial: " << facility1->getAmount() << std::endl;
     //Première part payée
     Part *part1=new Part(facility1,"22-12-2023");
@@ -77,9 +98,6 @@ int main() {
     part2->refund();
     std::cout << "Montant restant apres part 2: " << facility1->getAmount() << std::endl;
 
-    Portfolio *portfolio1=new Portfolio(deal);
-    deal->setPortfolio(portfolio1);
-
 /*
     std::vector<double> interestVector = facility1->getInterestToAddPortfolio();
 
@@ -90,11 +108,10 @@ int main() {
     }
     std::cout << std::endl;
 */
-    facility1->insertInPortfolio();
-
     std::cout << "Montant dans le portfolio: " << portfolio1->getTotalAmount() << std::endl;
-
     std::cout << "Statut du deal apres remboursement de la premiere facilty: " << deal->getStatus() << std::endl;
+
+    std::cout << "--------------------------------------------------------------" << std::endl;
 
     std::cout << std::endl << "Montant initial: " << facility2->getAmount() << std::endl;
     //Première part payée
@@ -108,14 +125,25 @@ int main() {
     part4->refund();
     std::cout << "Montant restant apres part 4 : " << facility2->getAmount() << std::endl;
 
-    facility2->insertInPortfolio();
+
     std::cout << "Montant dans le portfolio: " << portfolio1->getTotalAmount() << std::endl;
 
-    deal->refundInterests();
-    std::cout << "Montant dans le portfolio: " << portfolio1->getTotalAmount() << std::endl;
+    deal->refundInterests(100000.0);
+    std::cout << "Montant dans le portfolio apres remboursement : " << portfolio1->getTotalAmount() << std::endl;
 
     std::cout << "statut du deal: " << deal->getStatus() << std::endl;
 
     delete deal;
     delete borrower;
+    delete lender1;
+    delete lender2;
+    delete lender3;
+    delete agent;
+    delete part1;
+    delete part2;
+    delete part3;
+    delete part4;
+    delete facility2;
+    delete facility1;
+    delete portfolio1;
 }

@@ -149,6 +149,8 @@ void Deal::updateStatus() {
     double totalPortfolioAmount = 0.0;
     if (portfolio) {
         totalPortfolioAmount = portfolio->getTotalAmount();
+    }else {
+        throw std::invalid_argument("Le portfolio n'existe pas");
     }
 
     if (totalFacilitiesAmount == 0.0 && totalPortfolioAmount == 0.0) {
@@ -165,8 +167,8 @@ void Deal::refundInterests(double amount) {
     }else {
     for (int i = 0; i < interestPayments.size(); i++) {
         if (amount >= interestPayments[i]) {
-            portfolio->setInterestPayment(i, 0.0);
             amount -= interestPayments[i];
+            portfolio->setInterestPayment(i, 0.0);
         } else {
             portfolio->setInterestPayment(i, interestPayments[i] - amount);
             amount = 0.0;
