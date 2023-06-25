@@ -12,27 +12,27 @@ int main() {
 
     // Création des prêteurs
     Lender *agent = new Lender("BNP Paribas", true, "987654321");
-    Lender *lender1 = new Lender("Societe generale", true, "246813579");
-    Lender *lender2 = new Lender("Credit agricole", true, "135792468");
-    Lender *lender3 = new Lender("Natixis", true, "864209753");
+    Lender *pool1 = new Lender("Societe generale", true, "246813579");
+    Lender *pool2 = new Lender("Credit agricole", true, "135792468");
+    Lender *pool3 = new Lender("Natixis", true, "864209753");
 
     // Création des facilities
     Facility *facility1 = new Facility(nullptr, "22-06-2023",
                                        "22-06-2024", 1000000, "USD");
     facility1->addLender(agent);
-    facility1->addLender(lender1);
+    facility1->addLender(pool1);
 
     Facility *facility2 = new Facility(nullptr, "20-03-2023",
                                        "22-06-2025", 2000000,
                                        "USD");
-    facility2->addLender(lender2);
-    facility2->addLender(lender3);
+    facility2->addLender(pool2);
+    facility2->addLender(pool3);
 
 /* //Affichage des contributions par lender
-    facility1->addLenderContribution(lender1,20);
-    facility1->addLenderContribution(lender1,30);
-    facility1->addLenderContribution(lender2,30);
-    facility1->addLenderContribution(lender3,20);
+    facility1->addLenderContribution(pool1,20);
+    facility1->addLenderContribution(pool1,30);
+    facility1->addLenderContribution(pool2,30);
+    facility1->addLenderContribution(pool3,20);
     std::map<Lender *, double> contrib = facility1->getRepartAmount();
     // Afficher le contenu du vecteur
     std::cout << "Contenu des contrib : ";
@@ -48,22 +48,18 @@ int main() {
     Deal *deal = new Deal(borrower, agent, "S1234", 3000000, "USD",
                           "22-06-2023",
                           "22-06-2028");
-    deal->addFacility(facility1);
-    deal->addFacility(facility2);
-    deal->addPoolMember(lender1);
-    deal->addPoolMember(lender2);
-    deal->addPoolMember(lender3);
-
+    //Associer les facilities et les lenders au deal
+    deal->addFacility(facility1); deal->addFacility(facility2);
+    deal->addPoolMember(pool1); deal->addPoolMember(pool2); deal->addPoolMember(pool3);
     // Assigner le contrat aux facilities
-    facility1->setDeal(deal);
-    facility2->setDeal(deal);
+    facility1->setDeal(deal); facility2->setDeal(deal);
+    // Assignation dans l'autre sens
+    borrower->addDeal(deal); agent->addDeal(deal);
+    pool1->addDeal(deal); pool2->addDeal(deal); pool3->addDeal(deal);
+    // Assignation du portfolio au Deal
+    Portfolio *portfolio1=new Portfolio(deal);
+    deal->setPortfolio(portfolio1);
 
-    // Ajout du contrat aux emprunteurs et aux prêteurs
-    borrower->addDeal(deal);
-    agent->addDeal(deal);
-    lender1->addDeal(deal);
-    lender2->addDeal(deal);
-    lender3->addDeal(deal);
 
     // Impression des informations du contrat
     std::cout << "Contract Number: " << deal->getContractNumber() << std::endl;
@@ -81,10 +77,6 @@ int main() {
         std::cout << "\t" << "Currency: " << facility->getCurrency() << std::endl;
     }
 
-    Portfolio *portfolio1=new Portfolio(deal);
-    deal->setPortfolio(portfolio1);
-
-
     std::cout << "--------------------------------------------------------------" << std::endl;
     std::cout << std::endl << "Montant initial: " << facility1->getAmount() << std::endl;
     //Première part payée
@@ -98,16 +90,6 @@ int main() {
     part2->refund();
     std::cout << "Montant restant apres part 2: " << facility1->getAmount() << std::endl;
 
-/*
-    std::vector<double> interestVector = facility1->getInterestToAddPortfolio();
-
-    // Afficher le contenu du vecteur
-    std::cout << "Contenu de interestToAddPortfolio de facility1 : ";
-    for (const auto& interest : interestVector) {
-        std::cout << interest << " ";
-    }
-    std::cout << std::endl;
-*/
     std::cout << "Montant dans le portfolio: " << portfolio1->getTotalAmount() << std::endl;
     std::cout << "Statut du deal apres remboursement de la premiere facilty: " << deal->getStatus() << std::endl;
 
@@ -135,9 +117,9 @@ int main() {
 
     delete deal;
     delete borrower;
-    delete lender1;
-    delete lender2;
-    delete lender3;
+    delete pool1;
+    delete pool2;
+    delete pool3;
     delete agent;
     delete part1;
     delete part2;
