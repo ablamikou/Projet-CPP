@@ -5,8 +5,7 @@
 
 Portfolio::Portfolio(Deal* deal) : dealAssociated(deal) {}
 
-Portfolio::~Portfolio() {
-    }
+Portfolio::~Portfolio() {}
 
 Deal* Portfolio::getDealAssociated() const {
     return dealAssociated;

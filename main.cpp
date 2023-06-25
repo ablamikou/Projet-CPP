@@ -56,7 +56,7 @@ int main() {
 
     std::cout << "Pool Members: " << std::endl;
     for (auto &lender: deal->getPool()) {
-        std::cout << lender->getName() << std::endl;
+        std::cout << "\t" << lender->getName() << std::endl;
     }
 
     std::cout << "Facilities: " << std::endl;

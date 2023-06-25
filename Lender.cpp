@@ -3,7 +3,11 @@
 //#include "Facility.h"
 
 Lender::Lender(const std::string& name, bool isFinancialInstitution, const std::string& siren) :
-        Company(name, isFinancialInstitution, siren) { }
+        Company(name, isFinancialInstitution, siren) {
+            if (!isFinancialInstitution) {
+        throw std::runtime_error("Erreur : le lender doit être une institution financière");
+    }
+         }
 
 void Lender::addDeal(Deal* deal) {
     deals.push_back(deal);
